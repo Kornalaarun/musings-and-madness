@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../site.config';
+---
+
+<BaseLayout
+  title="About"
+  description={`About ${SITE.author} — software developer, reader, chess player.`}
+>
+  <div class="container">
+    <article class="about">
+      <h1 class="about__heading">About</h1>
+
+      <div class="about__body">
+        <p>
+          I'm Arun, a software developer. By day I work on distributed systems;
+          outside of that I read widely, build things for fun, and play chess
+          and quizzes when the opportunity arises.
+        </p>
+
+        <p>
+          This site is where I put writing that doesn't fit neatly into a work
+          context — technical notes from things I've been learning, distillations
+          of books I've found worth sitting with, and occasional essays on subjects
+          that have caught my attention.
+        </p>
+
+        <p>
+          The intended audience is anyone curious about the same things I am.
+          I write to understand, which means the writing is exploratory by nature.
+          Not all of it will be authoritative, but I try to be honest about
+          where I'm uncertain.
+        </p>
+
+        <p>
+          The future domain for this site is
+          <strong>musingsandmadness.me</strong>, currently in transit.
+        </p>
+      </div>
+    </article>
+  </div>
+</BaseLayout>

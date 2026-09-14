@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BASE } from '../site.config';
+---
+
+<BaseLayout title="Page not found" noindex>
+  <div class="container">
+    <section class="not-found">
+      <p class="not-found__code">404</p>
+      <h1 class="not-found__heading">Page not found</h1>
+      <p class="not-found__body">
+        This page doesn't exist or has moved. Try one of these:
+      </p>
+      <ul class="not-found__links">
+        <li><a href={BASE}>← Home</a></li>
+        <li><a href={`${BASE}about`}>About</a></li>
+        <li><a href={`${BASE}rss.xml`}>RSS feed</a></li>
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

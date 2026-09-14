@@ -1,0 +1,72 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE, BASE } from '../../site.config';
+
+export async function getStaticPaths() {
+  const isDev = import.meta.env.DEV;
+  const posts = await getCollection('blog', ({ data }) => {
+    if (data.draft && !isDev) return false;
+    return true;
+  });
+  return posts.map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const { title, description, date, topics, placeholder } = post.data;
+
+const dateStr = date.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const canonicalUrl = `${SITE.url}/blog/${post.id}`;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonicalUrl={canonicalUrl}
+  noindex={placeholder}
+  articleMeta={{ publishedTime: date.toISOString(), author: SITE.author }}
+>
+  <div class="container">
+    <article class="article">
+      <header class="article__header">
+        <a class="article__back" href={BASE}>← All writing</a>
+        <h1 class="article__title">{title}</h1>
+        <div class="article__meta">
+          <time datetime={date.toISOString().slice(0, 10)}>{dateStr}</time>
+          {topics && topics.length > 0 && (
+            <>
+              <span aria-hidden="true">·</span>
+              <ul class="article__topics">
+                {topics.map((t) => (
+                  <li class="article__topic">{t}</li>
+                ))}
+              </ul>
+            </>
+          )}
+        </div>
+      </header>
+
+      {placeholder && (
+        <div class="article__placeholder-notice">
+          This is a placeholder article for design review. It will be replaced
+          with real writing. Pages marked as placeholders are excluded from RSS
+          and the sitemap.
+        </div>
+      )}
+
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </div>
+</BaseLayout>

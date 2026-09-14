@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { SITE } from '../site.config';
+
+const isDev = import.meta.env.DEV;
+
+const posts = await getCollection('blog', ({ data }) => {
+  if (data.draft && !isDev) return false;
+  return true;
+});
+
+posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title={SITE.title} description={SITE.description}>
+  <div class="container">
+    <section class="home">
+      <div class="home__intro">
+        <h1 class="home__title">Musings<br />and Madness</h1>
+        <p class="home__tagline">
+          Personal writing by Arun — technical notes, book distillations,
+          and essays on whatever catches the eye.
+        </p>
+      </div>
+
+      <div>
+        <p class="home__section-title">Writing</p>
+        <ul class="article-list">
+          {posts.map((post) => (
+            <ArticleCard
+              id={post.id}
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              topics={post.data.topics}
+            />
+          ))}
+        </ul>
+        {posts.length === 0 && (
+          <p style="color: var(--text-muted); font-family: var(--sans); font-size: var(--size-sm);">
+            No articles yet.
+          </p>
+        )}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
