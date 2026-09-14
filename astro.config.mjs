@@ -4,8 +4,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://kornalaarun.github.io',
-  base: '/musings-and-madness',
+  site: 'https://musingsandmadness.me',
+  base: '/',
   integrations: [
     mdx(),
     sitemap({
