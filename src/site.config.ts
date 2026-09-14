@@ -3,7 +3,8 @@ export const SITE = {
   description:
     'Personal writing by Arun — technical articles, personal musings, book distillations, and essays.',
   author: 'Arun',
-  url: 'https://musingsandmadness.me',
+  url: 'https://kornalaarun.github.io/musings-and-madness',
+  futureUrl: 'https://musingsandmadness.me',
 } as const;
 
 /** BASE_URL normalised to always end with '/' */
