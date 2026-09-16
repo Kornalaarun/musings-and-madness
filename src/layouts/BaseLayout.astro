@@ -85,6 +85,12 @@ function isActive(href: string) {
               Home
             </a>
             <a
+              href={`${BASE}bites`}
+              aria-current={isActive(`${BASE}bites`) ? 'page' : undefined}
+            >
+              Bites
+            </a>
+            <a
               href={`${BASE}about`}
               aria-current={isActive(`${BASE}about`) ? 'page' : undefined}
             >

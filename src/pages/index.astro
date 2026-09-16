@@ -2,16 +2,20 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
-import { SITE } from '../site.config';
+import { SITE, BASE } from '../site.config';
 
 const isDev = import.meta.env.DEV;
 
-const posts = await getCollection('blog', ({ data }) => {
+const allPosts = await getCollection('blog', ({ data }) => {
   if (data.draft && !isDev) return false;
   return true;
 });
 
-posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const posts = allPosts.filter((p) => !p.data.topics?.includes('bites'));
+const bites = allPosts.filter((p) => p.data.topics?.includes('bites')).slice(0, 3);
+const totalBites = allPosts.filter((p) => p.data.topics?.includes('bites')).length;
 ---
 
 <BaseLayout title={SITE.title} description={SITE.description}>
@@ -25,23 +29,52 @@ posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
         </p>
       </div>
 
-      <div>
-        <p class="home__section-title">Writing</p>
-        <ul class="article-list">
-          {posts.map((post) => (
-            <ArticleCard
-              id={post.id}
-              title={post.data.title}
-              description={post.data.description}
-              date={post.data.date}
-              topics={post.data.topics}
-            />
-          ))}
-        </ul>
-        {posts.length === 0 && (
-          <p style="color: var(--text-muted); font-family: var(--sans); font-size: var(--size-sm);">
-            No articles yet.
-          </p>
+      <div class="home__columns">
+        <div class="home__main">
+          <p class="home__section-title">Writing</p>
+          <ul class="article-list">
+            {posts.map((post) => (
+              <ArticleCard
+                id={post.id}
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.date}
+                topics={post.data.topics}
+              />
+            ))}
+          </ul>
+          {posts.length === 0 && (
+            <p style="color: var(--text-muted); font-family: var(--sans); font-size: var(--size-sm);">
+              No articles yet.
+            </p>
+          )}
+        </div>
+
+        {bites.length > 0 && (
+          <aside class="home__sidebar">
+            <p class="home__section-title">Bites</p>
+            <ul class="bite-list">
+              {bites.map((post) => {
+                const dateStr = post.data.date.toLocaleDateString('en-GB', {
+                  day: 'numeric', month: 'short', year: 'numeric',
+                });
+                return (
+                  <li class="bite-item">
+                    <p class="bite-item__title">
+                      <a href={`${BASE}blog/${post.id}`}>{post.data.title}</a>
+                    </p>
+                    <p class="bite-item__date">{dateStr}</p>
+                  </li>
+                );
+              })}
+            </ul>
+            {totalBites > 3 && (
+              <a class="bite-list__more" href={`${BASE}bites`}>See all {totalBites} bites &rarr;</a>
+            )}
+            {totalBites <= 3 && (
+              <a class="bite-list__more" href={`${BASE}bites`}>See all &rarr;</a>
+            )}
+          </aside>
         )}
       </div>
     </section>
