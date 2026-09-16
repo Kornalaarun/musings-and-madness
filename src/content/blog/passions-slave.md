@@ -2,6 +2,7 @@
 title: "Passions Slave"
 description: "On managing anger, worry, and melancholy - notes from Emotional Intelligence by Daniel Goleman."
 date: 2026-09-17
+originalDate: 2021-07-22
 topics: ["books", "psychology", "emotional-intelligence"]
 ---
 

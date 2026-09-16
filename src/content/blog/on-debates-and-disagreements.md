@@ -2,6 +2,7 @@
 title: "On Debates and Disagreements"
 description: "Quick notes on how to argue well."
 date: 2026-09-17
+originalDate: 2022-09-10
 topics: ["bites", "reflections"]
 ---
 
