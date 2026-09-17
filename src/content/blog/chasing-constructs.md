@@ -2,7 +2,7 @@
 title: "Chasing Constructs"
 description: "On what we chase, and whether a more universal identity might last longer."
 date: 2026-09-17
-originalDate: 2022-03-25
+originalDate: 2025-03-22
 topics: ["bites", "reflections"]
 ---
 
