@@ -1,7 +1,7 @@
 export const SITE = {
   title: 'Musings and Madness',
   description:
-    'Personal writing by Arun — technical articles, personal musings, book distillations, and essays.',
+    'Personal writing by Arun - technical articles, personal musings, book distillations, and essays.',
   author: 'Arun',
   url: 'https://kornalaarun.github.io/musings-and-madness',
   futureUrl: 'https://musingsandmadness.me',
