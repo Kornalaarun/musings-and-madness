@@ -6,7 +6,7 @@ originalDate: 2022-05-29
 topics: ["bites", "reflections"]
 ---
 
-I always thought the current task was just a stepping stone and all my glories lied a future task which would showcase my talents and help me become successful.
+I always thought the current work was just a stepping stone and all my glories lied a future work which would showcase my talents and help me become successful.
 
 So why stress about a stepping stone? Why give it your all?
 
