@@ -23,8 +23,6 @@ const madness = [...projects]
 const nightstand = books.filter((b) => b.status === 'reading');
 const building = projects.filter((p) => p.status === 'building');
 
-// Things I am that don't fit in one box — rendered spilling out of one.
-const selves = ['writer', 'programmer', 'chess player', 'science optimist', 'storyteller', 'quizzer', 'reader'];
 
 const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
 ---
@@ -42,13 +40,7 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
       </h1>
       <p class="hook__lede">I write to understand, and I build to find out.</p>
 
-      <div class="box" aria-label="Things I am">
-        <span class="box__label">job title</span>
-        <ul class="box__selves">
-          {selves.map((s, i) => <li style={`--i:${i}`}>{s}</li>)}
-        </ul>
-        <span class="box__note">doesn't fit.</span>
-      </div>
+      <div class="box"><span>engineer</span></div>
     </section>
 
     <!-- II. The diptych -->
@@ -214,53 +206,22 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
     color: var(--text);
   }
 
-  /* The box that doesn't hold */
+  /* The one box the world puts me in. */
   .box {
-    position: relative;
-    margin-top: var(--space-12);
-    width: min(19rem, 100%);
-    height: 4.5rem;
+    display: inline-block;
+    margin-top: var(--space-8);
+    padding: 0.6rem 0.75rem;
     border: 1.5px dashed var(--text-muted);
     border-radius: 2px;
   }
-  .box__label {
-    position: absolute;
-    top: -0.7rem;
-    left: 0.75rem;
-    background: var(--bg);
-    padding-inline: 0.4rem;
-    font-family: var(--mono);
-    font-size: 0.7rem;
-    color: var(--text-muted);
-  }
-  .box__selves {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 0.6rem;
-    padding: 1rem 0.75rem;
-    width: 34rem;
-    max-width: calc(100vw - 3rem);
-  }
-  .box__selves li {
+  .box span {
+    display: inline-block;
     font-family: var(--sans);
     font-size: var(--size-sm);
     padding: 0.15rem 0.55rem;
     border: 1px solid var(--border);
     background: var(--paper);
     border-radius: 999px;
-    transform: rotate(calc((var(--i) - 3) * 1.4deg));
-    white-space: nowrap;
-  }
-  .box__note {
-    position: absolute;
-    left: 20rem;
-    bottom: -2.4rem;
-    font-family: var(--hand);
-    font-size: 1.35rem;
-    color: var(--accent);
-    white-space: nowrap;
-    transform: rotate(-6deg);
   }
 
   /* ── II. Diptych ─────────────────────────────────────────── */
@@ -442,9 +403,6 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
     .hook { padding-top: var(--space-12); }
     .diptych { grid-template-columns: 1fr; }
     .half { padding: var(--space-6) var(--space-4); }
-    .box { width: 100%; height: auto; }
-    .box__selves { width: auto; max-width: none; }
-    .box__note { left: auto; right: 0.5rem; bottom: -1.9rem; }
   }
 
   @media (prefers-reduced-motion: reduce) {
