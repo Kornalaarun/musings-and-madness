@@ -14,17 +14,14 @@ export const SITE = {
 export interface Social {
   label: string;
   url: string;
-  /** Which half of the site this channel extends. */
-  half: 'musings' | 'madness' | 'both';
-  note: string;
 }
 
 export const SOCIALS: Social[] = [
-  { label: 'LinkedIn',  url: 'https://www.linkedin.com/in/arun-kornala/', half: 'both',    note: 'the day job' },
-  { label: 'X',         url: 'https://x.com/kornalaarun', half: 'musings', note: 'thinking out loud' },
-  { label: 'GitHub',    url: 'https://github.com/Kornalaarun', half: 'madness', note: 'the code behind the madness' },
-  { label: 'Instagram', url: '', half: 'madness', note: 'AI stories + trivia (coming)' },
-  { label: 'YouTube',   url: '', half: 'madness', note: 'AI stories + trivia (coming)' },
+  { label: 'LinkedIn',  url: 'https://www.linkedin.com/in/arun-kornala/' },
+  { label: 'X',         url: 'https://x.com/kornalaarun' },
+  { label: 'GitHub',    url: 'https://github.com/Kornalaarun' },
+  { label: 'Instagram', url: '' }, // AI stories + trivia channel, coming
+  { label: 'YouTube',   url: '' }, // AI stories + trivia channel, coming
 ];
 
 export const liveSocials = SOCIALS.filter((s) => s.url);

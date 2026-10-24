@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE, BASE, liveSocials } from '../site.config';
+import { SITE, BASE } from '../site.config';
 import { projects } from '../data/projects';
 import { books } from '../data/library';
 
@@ -149,17 +149,6 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
         Start with <a href={`${BASE}about`}>the longer version of me</a>, or browse{' '}
         <a href={`${BASE}library`}>the library</a> that shaped most of this.
       </p>
-
-      {liveSocials.length > 0 && (
-        <ul class="elsewhere" aria-label="Elsewhere">
-          {liveSocials.map((s) => (
-            <li class={`elsewhere--${s.half}`}>
-              <a href={s.url} target="_blank" rel="me noopener noreferrer">{s.label}</a>
-              <span>{s.note}</span>
-            </li>
-          ))}
-        </ul>
-      )}
     </section>
 
   </div>
@@ -385,18 +374,6 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
     padding-block: var(--space-8) var(--space-16);
   }
   .invite p { font-size: var(--size-lg); max-width: 36rem; }
-
-  .elsewhere {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4) var(--space-8);
-    margin-top: var(--space-8);
-  }
-  .elsewhere li { display: flex; flex-direction: column; }
-  .elsewhere a { font-family: var(--sans); font-size: var(--size-sm); font-weight: 500; }
-  .elsewhere span { font-family: var(--hand); font-size: 1.1rem; color: var(--text-muted); line-height: 1.2; }
-  .elsewhere--madness a { font-family: var(--mono); }
 
   /* ── Small screens ──────────────────────────────────────── */
   @media (max-width: 48rem) {
