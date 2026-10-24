@@ -40,10 +40,7 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
         <span class="hook__and">and</span>
         <span class="hook__madness">Madness<span class="cursor" aria-hidden="true">_</span></span>
       </h1>
-      <p class="hook__lede">
-        I write to understand, and I build to find out. Most people are told to
-        pick one. I never could &mdash; so this site keeps both halves on the same page.
-      </p>
+      <p class="hook__lede">I write to understand, and I build to find out.</p>
 
       <div class="box" aria-label="Things I am">
         <span class="box__label">job title</span>
@@ -262,6 +259,7 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
     font-family: var(--hand);
     font-size: 1.35rem;
     color: var(--accent);
+    white-space: nowrap;
     transform: rotate(-6deg);
   }
 

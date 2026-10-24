@@ -8,15 +8,15 @@ const isDev = import.meta.env.DEV;
 
 <BaseLayout
   title="About"
-  description={`About ${SITE.author} — engineer, writer, chess player, perpetual starter of things.`}
+  description={`About ${SITE.author}: the kid who walked home inside a physics problem, and the long way back to him.`}
 >
   <div class="container">
     <header class="page-head">
       <span class="hand">the longer version</span>
       <h1 class="page-head__title">Hi, I'm Arun.</h1>
       <p class="page-head__lede">
-        I'm a software engineer who writes to understand and builds to find out.
-        This page is the story behind both halves of this site.
+        I write to understand, and I build to find out. This is how that started,
+        how I lost it for a while, and why this site exists.
       </p>
     </header>
 
@@ -25,26 +25,103 @@ const isDev = import.meta.env.DEV;
       <section class="act">
         <p class="act__n">I.</p>
         <div class="act__body">
-          <h2>The day job</h2>
+          <h2>The kid who hated math</h2>
           <p>
-            For more than a decade I've built distributed systems &mdash; lately the
-            unglamorous kind that move money: invoices, ledgers, the plumbing that has
-            to be right every single time. It taught me to respect boring correctness,
-            and to distrust anything that only works in the demo.
+            Growing up, I hated math. The way we were taught, it was computation:
+            add, subtract, multiply, divide, repeat. Then in eighth grade I fell for
+            physics, and through it, for math. I started reading far beyond the syllabus.
           </p>
-          {isDev && <p class="todo">TODO (Arun): where it started &mdash; the first thing you built, or the moment you knew you'd be an engineer.</p>}
+          <p>
+            That year a problem came up in class that stumped my teachers. I couldn't
+            let it go. I left school still turning it over, and walked all the way home
+            without noticing a single street or turn. By the time I reached my door I'd
+            set up the equation in my head and solved it.
+          </p>
+          <figure class="scrap" aria-label="Notebook scrap">
+            <span>two equations of motion &rarr; one quadratic in t</span>
+            <span>t&#8321; &gt; 0 &nbsp;&#10003;</span>
+            <span class="scrap__struck">t&#8322; &lt; 0</span>
+          </figure>
+          <p>
+            In hindsight it was small: two equations of motion, a quadratic, one negative
+            root thrown away. But for weeks, physics teachers across the school borrowed
+            my notebook to teach it in their classes. Something clicked into place that
+            I've never quite lost.
+          </p>
         </div>
       </section>
 
       <section class="act">
         <p class="act__n">II.</p>
         <div class="act__body">
-          <h2>The musings</h2>
+          <h2>The impossible ones</h2>
           <p>
-            Since 2021 I've kept notes for my future self &mdash; on motivation, on
-            salvaging bad days, on why wandering beats efficient lists. Most of them sat
-            in a notebook for years before they came here. I publish them because
-            they've held up.
+            A friend at a competitive-exam coaching centre was in its elite batch, the
+            one they called <em>Gems</em>. He brought me a problem none of them had cracked:
+            a four-digit number that reverses itself when multiplied by four. I gave him
+            the answer. He said I'd guessed. The next day I walked him through the method,
+            a cryptarithm technique I'd picked up from my elder brother's math book.
+          </p>
+          <figure class="scrap scrap--tilt" aria-label="Notebook scrap">
+            <span class="scrap__big">2178 &times; 4 = 8712</span>
+          </figure>
+          <p>
+            I was hyper-competitive about everything: quizzing, chess, debates, writing,
+            coding. I won Tata Crucible in Jamshedpur and Hyderabad. On our ACM ICPC
+            team, which made the regionals, I took the problems nobody else wanted:
+            number theory, Nim games, Sprague&ndash;Grundy.
+          </p>
+          <p>
+            Somewhere in there my identity set: the person who solves the problems other
+            people call impossible. I still carry it. Tell me something can't be done and
+            my brain goes into overdrive. I lose sleep until it gives.
+          </p>
+        </div>
+      </section>
+
+      <section class="act">
+        <p class="act__n">III.</p>
+        <div class="act__body">
+          <h2>The coin toss</h2>
+          <p>
+            Ambition has a ceiling set by geography and money. I topped computer science
+            in tenth grade without owning a computer. The internet was rationed for urgent
+            assignments, so I had only the teachers and books within reach.
+          </p>
+          <p>
+            I wanted to be a chess player, a writer, a filmmaker, a physicist, a hardcore
+            engineer. I could just as easily have studied mechanical engineering, or
+            electronics, or pure math and physics. Picking computer science was close to a
+            coin toss, except it was also a lottery ticket. It paid the most, and I had a
+            family to lift. That was all that mattered, and it was the right call.
+          </p>
+          <p>
+            For more than a decade since, I've built distributed systems. Lately they're
+            the unglamorous kind that move money: invoices, ledgers, plumbing that has to
+            be right every single time. The job still feeds the problem-solver. It's where
+            I learned to respect boring correctness, and to distrust anything that only
+            works in the demo.
+          </p>
+        </div>
+      </section>
+
+      <section class="act">
+        <p class="act__n">IV.</p>
+        <div class="act__body">
+          <h2>The parts I stopped feeding</h2>
+          <p>
+            In the hustle of work and supporting a family of five, I let the rest of me
+            go quiet. For most of a decade the writer, the physicist and the kid who walked
+            home inside a problem got nothing.
+          </p>
+          <p>
+            This site is me bringing them back.{' '}
+            <a href={`${BASE}writing`}>Musings</a> is the writer, with notes I'd kept for
+            my future self since 2021, published because they held up.{' '}
+            <a href={`${BASE}projects`}>Madness</a> is the kid with the notebook: a memory
+            architecture aimed at ARC-AGI, a serious dessert map of Hyderabad, a Chrome
+            extension that snaps half your tabs out of existence. AI has changed what one
+            curious person can build, and I intend to find out how far that goes.
           </p>
           <blockquote>
             Be 100% involved and experience everything. Good, bad and ugly. Live through
@@ -55,44 +132,41 @@ const isDev = import.meta.env.DEV;
       </section>
 
       <section class="act">
-        <p class="act__n">III.</p>
-        <div class="act__body">
-          <h2>The madness</h2>
-          <p>
-            Some ideas won't leave me alone until I build them: a memory architecture
-            aimed at ARC-AGI, a serious dessert map of Hyderabad, a Chrome extension
-            that snaps half your tabs out of existence, a rebuild of the Government of
-            India's global quiz. AI has changed what one curious person can make in a
-            weekend &mdash; I intend to find out how far that goes.
-          </p>
-          <p><a href={`${BASE}projects`}>See everything I've built &rarr;</a></p>
-        </div>
-      </section>
-
-      <section class="act">
-        <p class="act__n">IV.</p>
+        <p class="act__n">V.</p>
         <div class="act__body">
           <h2>Everything else</h2>
           <ul class="also">
-            <li><strong>Chess</strong> &mdash; for the way it punishes the first idea that feels right.</li>
-            <li><strong>Quizzing</strong> &mdash; the joy of knowing one strange fact at exactly the right moment.</li>
-            <li><strong>Reading</strong> &mdash; science told as story (Labatut, Deutsch), and accounts of small teams doing impossible engineering.</li>
+            <li>
+              <strong>Chess.</strong> The Sicilian with black, the Giuoco Piano with white.
+              No rating yet; I'll get one someday. Engines have turned the game into
+              computation, and some of the joy went with it, which is funny, because
+              computation is exactly what I hated about math as a kid.
+            </li>
+            <li>
+              <strong>Quizzing.</strong> Tata Crucible wins in Jamshedpur and Hyderabad,
+              and a shelf of college quizzes. Still the purest fun I know: one strange fact,
+              at exactly the right moment.
+            </li>
+            <li>
+              <strong>Reading.</strong> Science told as story (Labatut, Deutsch), and
+              accounts of small teams doing impossible engineering.
+            </li>
           </ul>
-          {isDev && <p class="todo">TODO (Arun): one specific detail each &mdash; a favourite opening or game, a quiz you won or lost, the book that changed your mind.</p>}
+          {isDev && <p class="todo">TODO (Arun): the book that changed your mind, and how. One or two lines.</p>}
           <p><a href={`${BASE}library`}>The library &rarr;</a></p>
         </div>
       </section>
 
       <section class="act act--chasing">
-        <p class="act__n">V.</p>
+        <p class="act__n">VI.</p>
         <div class="act__body">
           <h2>What I'm chasing</h2>
           <p>
-            Money has never been a reliable reason for me to get up early. What works is
-            seeing a better way for the world to exist &mdash; and patiently building
-            toward it until it's obvious to everyone else. For me that points at science,
-            at making hard things buildable, and at the places I come from getting better
-            at making things.
+            Money got me here, but it has never been what gets me up early. What works is
+            seeing a better way for the world to exist, and patiently building toward it
+            until it's obvious to everyone else. For me that points at science, at making
+            hard things buildable, and at the places I come from getting better at making
+            things.
           </p>
         </div>
       </section>
@@ -126,6 +200,27 @@ const isDev = import.meta.env.DEV;
   .act__body p:last-child { margin-bottom: 0; }
   .act--chasing h2 { font-style: italic; }
 
+  /* A torn-out bit of the notebook: the actual working, in hand. */
+  .scrap {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    margin: var(--space-2) 0 var(--space-6);
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--paper);
+    background-image: repeating-linear-gradient(transparent, transparent 1.6rem, #dfe6ef 1.6rem, #dfe6ef calc(1.6rem + 1px));
+    border-left: 2px solid #e8a3a3;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    font-family: var(--hand);
+    font-size: 1.3rem;
+    line-height: 1.6rem;
+    color: #2b4a7a;
+    transform: rotate(-1deg);
+  }
+  .scrap--tilt { transform: rotate(1.2deg); }
+  .scrap__big { font-size: 1.8rem; }
+  .scrap__struck { text-decoration: line-through; text-decoration-color: #b23a3a; opacity: 0.75; }
+
   blockquote {
     margin-block: var(--space-6);
     padding-left: var(--space-4);
@@ -144,7 +239,7 @@ const isDev = import.meta.env.DEV;
   }
 
   .also { list-style: none; margin-bottom: var(--space-4); }
-  .also li { padding-block: var(--space-2); line-height: 1.6; }
+  .also li { padding-block: var(--space-2); line-height: var(--lh-relaxed); }
   .also strong { font-weight: 500; }
 
   .todo {
