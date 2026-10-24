@@ -148,15 +148,6 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
       </dl>
     </section>
 
-    <!-- IV. The invitation -->
-    <section class="invite">
-      <p>
-        If something here rhymes with what you're working on, I'd like to hear about it.
-        Start with <a href={`${BASE}about`}>the longer version of me</a>, or browse{' '}
-        <a href={`${BASE}library`}>the library</a> that shaped most of this.
-      </p>
-    </section>
-
   </div>
 </BaseLayout>
 
@@ -388,13 +379,6 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
   }
   .now dt { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
   .now dd { margin-top: 0.2rem; }
-
-  /* ── IV. Invite ─────────────────────────────────────────── */
-  .invite {
-    border-top: 1px solid var(--border);
-    padding-block: var(--space-8) var(--space-16);
-  }
-  .invite p { font-size: var(--size-lg); max-width: 36rem; }
 
   /* ── Small screens ──────────────────────────────────────── */
   @media (max-width: 48rem) {
