@@ -316,37 +316,37 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
   .spine--2 { background: #8a6d3b; height: 10rem; }
 
   .half--madness {
-    background-color: var(--ink);
+    background-color: var(--madness-bg);
     background-image:
-      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+      linear-gradient(var(--madness-grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--madness-grid) 1px, transparent 1px);
     background-size: 22px 22px;
-    color: #d9dbd2;
+    color: var(--madness-text);
     font-family: var(--mono);
   }
-  .half--madness h2 { color: #f2f0e8; font-family: var(--mono); letter-spacing: -0.04em; }
-  .half--madness .half__head p { color: #8f948a; font-family: var(--mono); font-size: 0.78rem; }
+  .half--madness h2 { color: var(--madness-text); font-family: var(--mono); letter-spacing: -0.04em; }
+  .half--madness .half__head p { color: var(--madness-muted); font-family: var(--mono); font-size: 0.78rem; }
   .half--madness .half__hand { color: var(--signal); }
   .half--madness .half__more { color: var(--signal); font-family: var(--mono); font-size: 0.8rem; }
-  .half--madness .half__more:hover { color: #fff; }
+  .half--madness .half__more:hover { color: var(--madness-text); }
 
   .log { list-style: none; }
   .log li {
     display: grid;
     grid-template-columns: 2rem 1fr;
     padding-block: var(--space-3);
-    border-top: 1px dashed rgba(255,255,255,0.12);
+    border-top: 1px dashed var(--madness-rule);
   }
-  .log__n { font-size: 0.72rem; color: #6c7168; padding-top: 0.2rem; }
+  .log__n { font-size: 0.72rem; color: var(--madness-faint); padding-top: 0.2rem; }
   .log h3 {
     font-family: var(--mono);
     font-size: 0.95rem;
-    color: #f2f0e8;
+    color: var(--madness-text);
     margin-block: 0.2rem 0.25rem;
   }
-  .log h3 a { color: inherit; text-decoration-color: rgba(255,255,255,0.3); }
+  .log h3 a { color: inherit; text-decoration-color: var(--madness-rule); }
   .log h3 a:hover { color: var(--signal); }
-  .log p { font-family: var(--sans); font-size: 0.8rem; line-height: 1.55; color: #a6aaa0; }
+  .log p { font-family: var(--sans); font-size: 0.8rem; line-height: 1.55; color: var(--madness-muted); }
   .log__status {
     font-size: 0.65rem;
     letter-spacing: 0.08em;
@@ -354,9 +354,9 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
   }
   .log__status::before { content: '● '; }
   .log__status--building { color: var(--signal); }
-  .log__status--shipped  { color: #8fbf8a; }
+  .log__status--shipped  { color: var(--shipped); }
   .log__status--paused,
-  .log__status--idea     { color: #7d8278; }
+  .log__status--idea     { color: var(--madness-faint); }
 
   /* ── III. Chasing ────────────────────────────────────────── */
   .chasing { text-align: center; padding-bottom: var(--space-12); }

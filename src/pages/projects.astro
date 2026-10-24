@@ -68,8 +68,8 @@ let n = 0;
     margin-bottom: calc(-1 * var(--space-24));
     padding-bottom: var(--space-16);
   }
-  .madness .page-head__title { color: #f2f0e8; }
-  .madness .page-head__lede { color: #8f948a; font-size: var(--size-base); }
+  .madness .page-head__title { color: var(--madness-text); }
+  .madness .page-head__lede { color: var(--madness-muted); font-size: var(--size-base); }
   .madness .hand { color: var(--signal); }
   .cursor { color: var(--signal); animation: blink 1.1s steps(1) infinite; }
   @keyframes blink { 50% { opacity: 0; } }
@@ -84,39 +84,39 @@ let n = 0;
     font-size: var(--size-base);
     color: var(--signal);
     padding-bottom: var(--space-3);
-    border-bottom: 1px solid rgba(255,255,255,0.12);
+    border-bottom: 1px solid var(--madness-rule);
   }
-  .dir__note { font-family: var(--hand); font-size: 1.2rem; color: #8f948a; }
+  .dir__note { font-family: var(--hand); font-size: 1.2rem; color: var(--madness-muted); }
 
   .log { list-style: none; }
   .log__item {
     display: grid;
     grid-template-columns: 2.5rem 1fr;
     padding-block: var(--space-4);
-    border-bottom: 1px dashed rgba(255,255,255,0.1);
+    border-bottom: 1px dashed var(--madness-rule);
   }
-  .log__n { font-size: 0.75rem; color: #6c7168; padding-top: 0.25rem; }
-  .log__name { font-family: var(--mono); font-size: 1.05rem; color: #f2f0e8; }
+  .log__n { font-size: 0.75rem; color: var(--madness-faint); padding-top: 0.25rem; }
+  .log__name { font-family: var(--mono); font-size: 1.05rem; color: var(--madness-text); }
   .log__name a { color: inherit; text-decoration: none; }
   .log__name a:hover { color: var(--signal); }
   .log__desc {
     font-family: var(--sans);
     font-size: var(--size-sm);
     line-height: 1.6;
-    color: #b3b7ad;
+    color: var(--madness-muted);
     margin-top: 0.3rem;
   }
-  .log__tags { font-size: 0.72rem; color: #7d8278; margin-top: 0.4rem; }
+  .log__tags { font-size: 0.72rem; color: var(--madness-faint); margin-top: 0.4rem; }
   .log__item--paused .log__name,
-  .log__item--idea .log__name { color: #b3b7ad; }
+  .log__item--idea .log__name { color: var(--madness-muted); }
 
   .crossover {
     padding-top: var(--space-8);
     font-size: var(--size-sm);
-    color: #d9dbd2;
+    color: var(--madness-text);
   }
   .crossover a { color: var(--signal); }
-  .crossover span { color: #6c7168; }
+  .crossover span { color: var(--madness-faint); }
 
   @media (prefers-reduced-motion: reduce) {
     .cursor { animation: none; }

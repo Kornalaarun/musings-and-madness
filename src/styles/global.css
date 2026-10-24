@@ -12,7 +12,16 @@
   --selection-bg: #f0dfc8;
   --paper:       #fffdf8;
   --ink:         #1c1f1d;
-  --signal:      #e0b25a;
+
+  /* Madness half: engineering paper and drafting ink, not a dark mode. */
+  --madness-bg:    #edf0ec;
+  --madness-grid:  rgba(47, 93, 124, 0.09);
+  --madness-rule:  rgba(47, 93, 124, 0.2);
+  --madness-text:  #232a2c;
+  --madness-muted: #56615d;
+  --madness-faint: #6f7a75;
+  --signal:        #2f5d7c;
+  --shipped:       #4d7a4a;
 
   --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
   --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
@@ -471,10 +480,10 @@ main { flex: 1; }
 
 /* Graph paper for the Madness half */
 .graph-paper {
-  background-color: var(--ink);
+  background-color: var(--madness-bg);
   background-image:
-    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    linear-gradient(var(--madness-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--madness-grid) 1px, transparent 1px);
   background-size: 22px 22px;
-  color: #d9dbd2;
+  color: var(--madness-text);
 }
