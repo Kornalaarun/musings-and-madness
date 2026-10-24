@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { BASE } from '../site.config';
+import { projects, type ProjectStatus } from '../data/projects';
+
+const groups: { status: ProjectStatus; label: string; note: string }[] = [
+  { status: 'building', label: 'building/', note: 'on the bench right now' },
+  { status: 'shipped',  label: 'shipped/',  note: 'out in the world' },
+  { status: 'paused',   label: 'paused/',   note: 'waiting for their moment' },
+  { status: 'idea',     label: 'ideas/',    note: "haven't let go of these" },
+];
+
+const sections = groups
+  .map((g) => ({ ...g, items: projects.filter((p) => p.status === g.status) }))
+  .filter((g) => g.items.length > 0);
+
+let n = 0;
+---
+
+<BaseLayout title="Madness" description="Things I built because I couldn't stop thinking about them.">
+  <div class="madness graph-paper">
+    <div class="container">
+      <header class="page-head">
+        <span class="hand">the doing</span>
+        <h1 class="page-head__title page-head__title--madness">Madness<span class="cursor" aria-hidden="true">_</span></h1>
+        <p class="page-head__lede">
+          // things I built because I couldn't stop thinking about them.
+          AI, maps, quizzes, marketplaces &mdash; whatever wouldn't leave me alone.
+        </p>
+      </header>
+
+      {sections.map((s) => (
+        <section class="dir">
+          <h2 class="dir__label">
+            <span>~/{s.label}</span>
+            <span class="dir__note">{s.note}</span>
+          </h2>
+          <ol class="log">
+            {s.items.map((p) => (
+              <li class={`log__item log__item--${p.status}`}>
+                <span class="log__n">{String(++n).padStart(2, '0')}</span>
+                <div>
+                  <h3 class="log__name">
+                    {p.url
+                      ? <a href={p.url} target="_blank" rel="noopener noreferrer">{p.name} <span aria-hidden="true">↗</span></a>
+                      : p.name}
+                  </h3>
+                  <p class="log__desc">{p.description}</p>
+                  <p class="log__tags">{p.tags.map((t) => `#${t.toLowerCase().replace(/\s+/g, '-')}`).join(' ')}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+
+      <p class="crossover">
+        $ cd ../<a href={`${BASE}writing`}>musings</a> &nbsp;<span>// the thinking behind these</span>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* The dark half runs edge to edge, down to the footer. */
+  .madness {
+    font-family: var(--mono);
+    margin-bottom: calc(-1 * var(--space-24));
+    padding-bottom: var(--space-16);
+  }
+  .madness .page-head__title { color: #f2f0e8; }
+  .madness .page-head__lede { color: #8f948a; font-size: var(--size-base); }
+  .madness .hand { color: var(--signal); }
+  .cursor { color: var(--signal); animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .dir { padding-block: var(--space-6); }
+  .dir__label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-2) var(--space-4);
+    font-family: var(--mono);
+    font-size: var(--size-base);
+    color: var(--signal);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .dir__note { font-family: var(--hand); font-size: 1.2rem; color: #8f948a; }
+
+  .log { list-style: none; }
+  .log__item {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    padding-block: var(--space-4);
+    border-bottom: 1px dashed rgba(255,255,255,0.1);
+  }
+  .log__n { font-size: 0.75rem; color: #6c7168; padding-top: 0.25rem; }
+  .log__name { font-family: var(--mono); font-size: 1.05rem; color: #f2f0e8; }
+  .log__name a { color: inherit; text-decoration: none; }
+  .log__name a:hover { color: var(--signal); }
+  .log__desc {
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    line-height: 1.6;
+    color: #b3b7ad;
+    margin-top: 0.3rem;
+  }
+  .log__tags { font-size: 0.72rem; color: #7d8278; margin-top: 0.4rem; }
+  .log__item--paused .log__name,
+  .log__item--idea .log__name { color: #b3b7ad; }
+
+  .crossover {
+    padding-top: var(--space-8);
+    font-size: var(--size-sm);
+    color: #d9dbd2;
+  }
+  .crossover a { color: var(--signal); }
+  .crossover span { color: #6c7168; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { animation: none; }
+  }
+</style>

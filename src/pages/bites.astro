@@ -1,48 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ArticleCard from '../components/ArticleCard.astro';
-import { SITE } from '../site.config';
-
-const isDev = import.meta.env.DEV;
-
-const bites = await getCollection('blog', ({ data }) => {
-  if (data.draft && !isDev) return false;
-  return data.topics?.includes('bites') ?? false;
-});
-
-bites.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+// Bites now live alongside essays on /writing; keep old links working.
+import { BASE } from '../site.config';
+const target = `${BASE}writing`;
 ---
-
-<BaseLayout
-  title="Bites"
-  description="Short reads — quick notes, reflections, and fragments."
->
-  <div class="container">
-    <section class="home">
-      <div class="home__intro">
-        <h1 class="home__title">Bites</h1>
-        <p class="home__tagline">Short reads — quick notes, reflections, and fragments.</p>
-      </div>
-
-      <div>
-        <ul class="article-list">
-          {bites.map((post) => (
-            <ArticleCard
-              id={post.id}
-              title={post.data.title}
-              description={post.data.description}
-              date={post.data.date}
-              topics={post.data.topics}
-            />
-          ))}
-        </ul>
-        {bites.length === 0 && (
-          <p style="color: var(--text-muted); font-family: var(--sans); font-size: var(--size-sm);">
-            Nothing here yet.
-          </p>
-        )}
-      </div>
-    </section>
-  </div>
-</BaseLayout>
+<!doctype html>
+<meta charset="utf-8" />
+<meta http-equiv="refresh" content={`0; url=${target}`} />
+<link rel="canonical" href={target} />
+<meta name="robots" content="noindex" />
+<a href={target}>Bites have moved to Musings &rarr;</a>

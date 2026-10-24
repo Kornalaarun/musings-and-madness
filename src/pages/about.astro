@@ -1,38 +1,171 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE } from '../site.config';
+import { SITE, BASE, liveSocials } from '../site.config';
+
+// Gaps only Arun can fill. Rendered in dev so they're impossible to miss; never shipped.
+const isDev = import.meta.env.DEV;
 ---
 
 <BaseLayout
   title="About"
-  description={`About ${SITE.author} — software developer, reader, chess player.`}
+  description={`About ${SITE.author} — engineer, writer, chess player, perpetual starter of things.`}
 >
   <div class="container">
-    <article class="about">
-      <h1 class="about__heading">About</h1>
+    <header class="page-head">
+      <span class="hand">the longer version</span>
+      <h1 class="page-head__title">Hi, I'm Arun.</h1>
+      <p class="page-head__lede">
+        I'm a software engineer who writes to understand and builds to find out.
+        This page is the story behind both halves of this site.
+      </p>
+    </header>
 
-      <div class="about__body">
-        <p>
-          I'm Arun, a software developer. By day I work on distributed systems;
-          outside of that I read widely, build things for fun, and play chess
-          and quizzes when the opportunity arises.
-        </p>
+    <article class="story">
 
-        <p>
-          This site is where I put writing that doesn't fit neatly into a work
-          context — technical notes from things I've been learning, distillations
-          of books I've found worth sitting with, and occasional essays on subjects
-          that have caught my attention.
-        </p>
+      <section class="act">
+        <p class="act__n">I.</p>
+        <div class="act__body">
+          <h2>The day job</h2>
+          <p>
+            For more than a decade I've built distributed systems &mdash; lately the
+            unglamorous kind that move money: invoices, ledgers, the plumbing that has
+            to be right every single time. It taught me to respect boring correctness,
+            and to distrust anything that only works in the demo.
+          </p>
+          {isDev && <p class="todo">TODO (Arun): where it started &mdash; the first thing you built, or the moment you knew you'd be an engineer.</p>}
+        </div>
+      </section>
 
-        <p>
-          The intended audience is anyone curious about the same things I am.
-          I write to understand, which means the writing is exploratory by nature.
-          Not all of it will be authoritative, but I try to be honest about
-          where I'm uncertain.
-        </p>
+      <section class="act">
+        <p class="act__n">II.</p>
+        <div class="act__body">
+          <h2>The musings</h2>
+          <p>
+            Since 2021 I've kept notes for my future self &mdash; on motivation, on
+            salvaging bad days, on why wandering beats efficient lists. Most of them sat
+            in a notebook for years before they came here. I publish them because
+            they've held up.
+          </p>
+          <blockquote>
+            Be 100% involved and experience everything. Good, bad and ugly. Live through
+            it all and tell stories to help everyone who comes after you.
+            <cite><a href={`${BASE}blog/nothing-is-final`}>Nothing is Final</a>, 2021</cite>
+          </blockquote>
+        </div>
+      </section>
 
-      </div>
+      <section class="act">
+        <p class="act__n">III.</p>
+        <div class="act__body">
+          <h2>The madness</h2>
+          <p>
+            Some ideas won't leave me alone until I build them: a memory architecture
+            aimed at ARC-AGI, a serious dessert map of Hyderabad, a Chrome extension
+            that snaps half your tabs out of existence, a rebuild of the Government of
+            India's global quiz. AI has changed what one curious person can make in a
+            weekend &mdash; I intend to find out how far that goes.
+          </p>
+          <p><a href={`${BASE}projects`}>See everything I've built &rarr;</a></p>
+        </div>
+      </section>
+
+      <section class="act">
+        <p class="act__n">IV.</p>
+        <div class="act__body">
+          <h2>Everything else</h2>
+          <ul class="also">
+            <li><strong>Chess</strong> &mdash; for the way it punishes the first idea that feels right.</li>
+            <li><strong>Quizzing</strong> &mdash; the joy of knowing one strange fact at exactly the right moment.</li>
+            <li><strong>Reading</strong> &mdash; science told as story (Labatut, Deutsch), and accounts of small teams doing impossible engineering.</li>
+          </ul>
+          {isDev && <p class="todo">TODO (Arun): one specific detail each &mdash; a favourite opening or game, a quiz you won or lost, the book that changed your mind.</p>}
+          <p><a href={`${BASE}library`}>The library &rarr;</a></p>
+        </div>
+      </section>
+
+      <section class="act act--chasing">
+        <p class="act__n">V.</p>
+        <div class="act__body">
+          <h2>What I'm chasing</h2>
+          <p>
+            Money has never been a reliable reason for me to get up early. What works is
+            seeing a better way for the world to exist &mdash; and patiently building
+            toward it until it's obvious to everyone else. For me that points at science,
+            at making hard things buildable, and at the places I come from getting better
+            at making things.
+          </p>
+        </div>
+      </section>
+
     </article>
+
+    {liveSocials.length > 0 && (
+      <p class="elsewhere">
+        Find me elsewhere:{' '}
+        {liveSocials.map((s, i) => (
+          <>{i > 0 && ' · '}<a href={s.url} target="_blank" rel="me noopener noreferrer">{s.label}</a></>
+        ))}
+      </p>
+    )}
   </div>
 </BaseLayout>
+
+<style>
+  .story { max-width: 44rem; }
+
+  .act {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: var(--space-4);
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--border);
+  }
+  .act__n { font-style: italic; color: var(--accent); font-size: var(--size-xl); line-height: 1.2; }
+  .act__body h2 { font-size: var(--size-2xl); margin-bottom: var(--space-3); }
+  .act__body p { line-height: var(--lh-relaxed); margin-bottom: var(--space-4); }
+  .act__body p:last-child { margin-bottom: 0; }
+  .act--chasing h2 { font-style: italic; }
+
+  blockquote {
+    margin-block: var(--space-6);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--accent);
+    font-style: italic;
+    font-size: var(--size-lg);
+    line-height: 1.6;
+  }
+  cite {
+    display: block;
+    margin-top: var(--space-2);
+    font-style: normal;
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+  }
+
+  .also { list-style: none; margin-bottom: var(--space-4); }
+  .also li { padding-block: var(--space-2); line-height: 1.6; }
+  .also strong { font-weight: 500; }
+
+  .todo {
+    font-family: var(--hand);
+    font-size: 1.25rem;
+    color: #b23a3a;
+    background: #fff4d6;
+    padding: var(--space-2) var(--space-3);
+    transform: rotate(-0.5deg);
+  }
+
+  .elsewhere {
+    max-width: none;
+    border-top: 1px solid var(--border);
+    padding-top: var(--space-8);
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 40rem) {
+    .act { grid-template-columns: 1fr; gap: var(--space-1); }
+  }
+</style>

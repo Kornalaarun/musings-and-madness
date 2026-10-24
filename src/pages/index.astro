@@ -1,82 +1,455 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ArticleCard from '../components/ArticleCard.astro';
-import { SITE, BASE } from '../site.config';
+import { SITE, BASE, liveSocials } from '../site.config';
+import { projects } from '../data/projects';
+import { books } from '../data/library';
 
 const isDev = import.meta.env.DEV;
 
-const allPosts = await getCollection('blog', ({ data }) => {
-  if (data.draft && !isDev) return false;
-  return true;
-});
+const allPosts = (await getCollection('blog'))
+  .filter((p) => isDev || (!p.data.draft && !p.data.placeholder))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const essays = allPosts.filter((p) => !p.data.topics?.includes('bites'));
+const bites = allPosts.filter((p) => p.data.topics?.includes('bites'));
 
-const posts = allPosts.filter((p) => !p.data.topics?.includes('bites'));
-const bites = allPosts.filter((p) => p.data.topics?.includes('bites')).slice(0, 3);
-const totalBites = allPosts.filter((p) => p.data.topics?.includes('bites')).length;
+// The Madness column leads with what's alive, then what shipped.
+const statusOrder = { building: 0, shipped: 1, paused: 2, idea: 3 } as const;
+const madness = [...projects]
+  .sort((a, b) => statusOrder[a.status] - statusOrder[b.status])
+  .slice(0, 6);
+
+const nightstand = books.filter((b) => b.status === 'reading');
+const building = projects.filter((p) => p.status === 'building');
+
+// Things I am that don't fit in one box — rendered spilling out of one.
+const selves = ['writer', 'programmer', 'chess player', 'science optimist', 'storyteller', 'quizzer', 'reader'];
+
+const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
 ---
 
 <BaseLayout title={SITE.title} description={SITE.description}>
   <div class="container">
-    <section class="home">
-      <div class="home__intro">
-        <h1 class="home__title">Musings<br />and Madness</h1>
-        <p class="home__tagline">
-          Personal writing by Arun - technical notes, book distillations,
-          and essays on whatever catches the eye.
-        </p>
-      </div>
 
-      <div class="home__columns">
-        <div class="home__main">
-          <p class="home__section-title">Writing</p>
-          <ul class="article-list">
-            {posts.map((post) => (
-              <ArticleCard
-                id={post.id}
-                title={post.data.title}
-                description={post.data.description}
-                date={post.data.date}
-                topics={post.data.topics}
-              />
-            ))}
-          </ul>
-          {posts.length === 0 && (
-            <p style="color: var(--text-muted); font-family: var(--sans); font-size: var(--size-sm);">
-              No articles yet.
-            </p>
-          )}
-        </div>
+    <!-- I. The hook -->
+    <section class="hook">
+      <p class="hook__kicker">Arun's notebook &middot; est. 2021</p>
+      <h1 class="hook__title">
+        <span class="hook__musings">Musings</span>
+        <span class="hook__and">and</span>
+        <span class="hook__madness">Madness<span class="cursor" aria-hidden="true">_</span></span>
+      </h1>
+      <p class="hook__lede">
+        I write to understand, and I build to find out. Most people are told to
+        pick one. I never could &mdash; so this site keeps both halves on the same page.
+      </p>
 
-        {bites.length > 0 && (
-          <aside class="home__sidebar">
-            <p class="home__section-title">Bites</p>
-            <ul class="bite-list">
-              {bites.map((post) => {
-                const dateStr = post.data.date.toLocaleDateString('en-GB', {
-                  day: 'numeric', month: 'short', year: 'numeric',
-                });
-                return (
-                  <li class="bite-item">
-                    <p class="bite-item__title">
-                      <a href={`${BASE}blog/${post.id}`}>{post.data.title}</a>
-                    </p>
-                    <p class="bite-item__date">{dateStr}</p>
-                  </li>
-                );
-              })}
-            </ul>
-            {totalBites > 3 && (
-              <a class="bite-list__more" href={`${BASE}bites`}>See all {totalBites} bites &rarr;</a>
-            )}
-            {totalBites <= 3 && (
-              <a class="bite-list__more" href={`${BASE}bites`}>See all &rarr;</a>
-            )}
-          </aside>
-        )}
+      <div class="box" aria-label="Things I am">
+        <span class="box__label">job title</span>
+        <ul class="box__selves">
+          {selves.map((s, i) => <li style={`--i:${i}`}>{s}</li>)}
+        </ul>
+        <span class="box__note">doesn't fit.</span>
       </div>
     </section>
+
+    <!-- II. The diptych -->
+    <section class="diptych" aria-label="Two halves">
+
+      <div class="half half--musings">
+        <header class="half__head">
+          <span class="half__hand">the thinking</span>
+          <h2>Musings</h2>
+          <p>Essays and notes, mostly written for my future self. Some are years old; they're still true.</p>
+        </header>
+
+        <ol class="essays">
+          {essays.slice(0, 5).map((p) => (
+            <li>
+              <a href={`${BASE}blog/${p.id}`}>
+                <span class="essays__title">{p.data.title}</span>
+                <span class="essays__year">{year(p.data.originalDate ?? p.data.date)}</span>
+              </a>
+              <p>{p.data.description}</p>
+            </li>
+          ))}
+        </ol>
+
+        {bites.length > 0 && (
+          <div class="bites">
+            <span class="bites__label">Bites &mdash; shorter thoughts</span>
+            <p>
+              {bites.slice(0, 4).map((p, i) => (
+                <>{i > 0 && <span aria-hidden="true"> &middot; </span>}<a href={`${BASE}blog/${p.id}`}>{p.data.title}</a></>
+              ))}
+            </p>
+          </div>
+        )}
+
+        {nightstand.length > 0 && (
+          <div class="shelf">
+            <span class="bites__label">On the nightstand</span>
+            <ul class="shelf__spines">
+              {nightstand.map((b, i) => (
+                <li class={`spine spine--${i % 3}`} title={`${b.title} — ${b.author}`}>
+                  <span>{b.title}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <a class="half__more" href={`${BASE}writing`}>All {essays.length + bites.length} pieces &rarr;</a>
+      </div>
+
+      <div class="half half--madness">
+        <header class="half__head">
+          <span class="half__hand">the doing</span>
+          <h2>Madness</h2>
+          <p>// things I built because I couldn't stop thinking about them</p>
+        </header>
+
+        <ol class="log">
+          {madness.map((p, i) => (
+            <li>
+              <span class="log__n">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <span class={`log__status log__status--${p.status}`}>{p.status}</span>
+                <h3>
+                  {p.url ? <a href={p.url} target="_blank" rel="noopener noreferrer">{p.name}</a> : p.name}
+                </h3>
+                <p>{p.description}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <a class="half__more" href={`${BASE}projects`}>$ ls projects/ &nbsp;&rarr; {projects.length} entries</a>
+      </div>
+    </section>
+
+    <!-- III. Where the halves meet -->
+    <section class="chasing" aria-labelledby="chasing-title">
+      <svg class="chasing__lines" viewBox="0 0 400 60" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M100 0 C100 40, 200 20, 200 60" />
+        <path d="M300 0 C300 40, 200 20, 200 60" />
+      </svg>
+      <h2 id="chasing-title" class="chasing__title">What both halves are chasing</h2>
+      <p class="chasing__line">
+        A better way for the world to exist &mdash; and the patience to build toward it
+        until it's obvious to everyone else.
+      </p>
+
+      <dl class="now">
+        <div>
+          <dt>Reading</dt>
+          <dd>{nightstand.map((b) => b.title).join(' · ')}</dd>
+        </div>
+        <div>
+          <dt>Building</dt>
+          <dd>{building.slice(0, 3).map((p) => p.name).join(' · ')}</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- IV. The invitation -->
+    <section class="invite">
+      <p>
+        If something here rhymes with what you're working on, I'd like to hear about it.
+        Start with <a href={`${BASE}about`}>the longer version of me</a>, or browse{' '}
+        <a href={`${BASE}library`}>the library</a> that shaped most of this.
+      </p>
+
+      {liveSocials.length > 0 && (
+        <ul class="elsewhere" aria-label="Elsewhere">
+          {liveSocials.map((s) => (
+            <li class={`elsewhere--${s.half}`}>
+              <a href={s.url} target="_blank" rel="me noopener noreferrer">{s.label}</a>
+              <span>{s.note}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+
   </div>
 </BaseLayout>
+
+<style>
+  /* ── I. Hook ─────────────────────────────────────────────── */
+  .hook {
+    padding-block: var(--space-16) var(--space-12);
+  }
+  .hook__kicker {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-4);
+  }
+  .hook__title {
+    font-size: clamp(2.75rem, 8vw, 5rem);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.3em;
+  }
+  .hook__musings { font-style: italic; }
+  .hook__and { font-size: 0.45em; color: var(--text-muted); font-style: italic; }
+  .hook__madness {
+    font-family: var(--mono);
+    font-size: 0.82em;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+  .cursor { color: var(--accent); animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hook__lede {
+    font-size: var(--size-xl);
+    line-height: 1.55;
+    max-width: 34rem;
+    margin-top: var(--space-6);
+    color: var(--text);
+  }
+
+  /* The box that doesn't hold */
+  .box {
+    position: relative;
+    margin-top: var(--space-12);
+    width: min(19rem, 100%);
+    height: 4.5rem;
+    border: 1.5px dashed var(--text-muted);
+    border-radius: 2px;
+  }
+  .box__label {
+    position: absolute;
+    top: -0.7rem;
+    left: 0.75rem;
+    background: var(--bg);
+    padding-inline: 0.4rem;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+  }
+  .box__selves {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.6rem;
+    padding: 1rem 0.75rem;
+    width: 34rem;
+    max-width: calc(100vw - 3rem);
+  }
+  .box__selves li {
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--border);
+    background: var(--paper);
+    border-radius: 999px;
+    transform: rotate(calc((var(--i) - 3) * 1.4deg));
+    white-space: nowrap;
+  }
+  .box__note {
+    position: absolute;
+    left: 20rem;
+    bottom: -2.4rem;
+    font-family: var(--hand);
+    font-size: 1.35rem;
+    color: var(--accent);
+    transform: rotate(-6deg);
+  }
+
+  /* ── II. Diptych ─────────────────────────────────────────── */
+  .diptych {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: var(--space-12);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .half {
+    padding: var(--space-8) var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+  }
+  .half__head { margin-bottom: var(--space-6); position: relative; }
+  .half__hand {
+    font-family: var(--hand);
+    font-size: 1.3rem;
+    color: var(--accent);
+    display: inline-block;
+    transform: rotate(-3deg);
+  }
+  .half__head h2 { font-size: var(--size-3xl); margin-block: 0.1rem 0.5rem; }
+  .half__head p { font-size: var(--size-sm); color: var(--text-muted); line-height: 1.6; }
+  .half__more {
+    margin-top: auto;
+    padding-top: var(--space-6);
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    text-decoration: none;
+  }
+
+  .half--musings { background: var(--paper); }
+  .half--musings h2 { font-style: italic; }
+
+  .essays { list-style: none; }
+  .essays li { padding-block: var(--space-3); border-top: 1px solid var(--border); }
+  .essays a {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    text-decoration: none;
+    color: var(--text);
+  }
+  .essays a:hover .essays__title { color: var(--accent); }
+  .essays__title { font-size: var(--size-lg); }
+  .essays__year { font-family: var(--mono); font-size: 0.75rem; color: var(--text-muted); padding-top: 0.3rem; }
+  .essays p { font-size: var(--size-sm); color: var(--text-muted); line-height: 1.55; margin-top: 0.15rem; }
+
+  .bites { margin-top: var(--space-6); }
+  .bites__label {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-2);
+  }
+  .bites p { font-size: var(--size-sm); line-height: 1.7; }
+
+  .shelf { margin-top: var(--space-6); }
+  .shelf__spines { list-style: none; display: flex; gap: 4px; align-items: flex-end; }
+  .spine {
+    width: 2.1rem;
+    padding: 0.5rem 0;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
+    color: #fbf6ee;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+  }
+  .spine span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-height: 9rem; }
+  .spine--0 { background: #7a4b3a; height: 9.5rem; }
+  .spine--1 { background: #3f5a52; height: 8.25rem; }
+  .spine--2 { background: #8a6d3b; height: 10rem; }
+
+  .half--madness {
+    background-color: var(--ink);
+    background-image:
+      linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+    background-size: 22px 22px;
+    color: #d9dbd2;
+    font-family: var(--mono);
+  }
+  .half--madness h2 { color: #f2f0e8; font-family: var(--mono); letter-spacing: -0.04em; }
+  .half--madness .half__head p { color: #8f948a; font-family: var(--mono); font-size: 0.78rem; }
+  .half--madness .half__hand { color: var(--signal); }
+  .half--madness .half__more { color: var(--signal); font-family: var(--mono); font-size: 0.8rem; }
+  .half--madness .half__more:hover { color: #fff; }
+
+  .log { list-style: none; }
+  .log li {
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    padding-block: var(--space-3);
+    border-top: 1px dashed rgba(255,255,255,0.12);
+  }
+  .log__n { font-size: 0.72rem; color: #6c7168; padding-top: 0.2rem; }
+  .log h3 {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    color: #f2f0e8;
+    margin-block: 0.2rem 0.25rem;
+  }
+  .log h3 a { color: inherit; text-decoration-color: rgba(255,255,255,0.3); }
+  .log h3 a:hover { color: var(--signal); }
+  .log p { font-family: var(--sans); font-size: 0.8rem; line-height: 1.55; color: #a6aaa0; }
+  .log__status {
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .log__status::before { content: '● '; }
+  .log__status--building { color: var(--signal); }
+  .log__status--shipped  { color: #8fbf8a; }
+  .log__status--paused,
+  .log__status--idea     { color: #7d8278; }
+
+  /* ── III. Chasing ────────────────────────────────────────── */
+  .chasing { text-align: center; padding-bottom: var(--space-12); }
+  .chasing__lines { width: 100%; height: 4rem; display: block; }
+  .chasing__lines path { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+  .chasing__title {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-top: var(--space-4);
+  }
+  .chasing__line {
+    font-size: clamp(1.4rem, 3vw, 1.9rem);
+    font-style: italic;
+    line-height: 1.35;
+    max-width: 36rem;
+    margin: var(--space-3) auto 0;
+  }
+  .now {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-12);
+    margin-top: var(--space-8);
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+  }
+  .now dt { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+  .now dd { margin-top: 0.2rem; }
+
+  /* ── IV. Invite ─────────────────────────────────────────── */
+  .invite {
+    border-top: 1px solid var(--border);
+    padding-block: var(--space-8) var(--space-16);
+  }
+  .invite p { font-size: var(--size-lg); max-width: 36rem; }
+
+  .elsewhere {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-8);
+    margin-top: var(--space-8);
+  }
+  .elsewhere li { display: flex; flex-direction: column; }
+  .elsewhere a { font-family: var(--sans); font-size: var(--size-sm); font-weight: 500; }
+  .elsewhere span { font-family: var(--hand); font-size: 1.1rem; color: var(--text-muted); line-height: 1.2; }
+  .elsewhere--madness a { font-family: var(--mono); }
+
+  /* ── Small screens ──────────────────────────────────────── */
+  @media (max-width: 48rem) {
+    .hook { padding-top: var(--space-12); }
+    .diptych { grid-template-columns: 1fr; }
+    .half { padding: var(--space-6) var(--space-4); }
+    .box { width: 100%; height: auto; }
+    .box__selves { width: auto; max-width: none; }
+    .box__note { left: auto; right: 0.5rem; bottom: -1.9rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor { animation: none; }
+  }
+</style>

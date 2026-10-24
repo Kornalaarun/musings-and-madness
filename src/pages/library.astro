@@ -1,0 +1,377 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { books, papers, links, quotes, ideas } from '../data/library';
+
+const reading = books.filter(b => b.status === 'reading');
+const read = books.filter(b => b.status === 'read');
+---
+
+<BaseLayout title="Library" description="Books, papers, links, quotes, and open ideas.">
+  <div class="container">
+    <article class="library-page">
+      <header class="library-header">
+        <h1 class="library-title">Library</h1>
+        <p class="library-intro">Books, papers, links, quotes, and open ideas.</p>
+        <nav class="library-nav" aria-label="Library sections">
+          <a href="#books">Books</a>
+          <a href="#papers">Papers</a>
+          <a href="#links">Links</a>
+          <a href="#quotes">Quotes</a>
+          <a href="#ideas">Ideas</a>
+        </nav>
+      </header>
+
+      <!-- ── Books ────────────────────────────────── -->
+      <section class="lib-section" id="books">
+        <h2 class="lib-section-title">Books</h2>
+
+        {reading.length > 0 && (
+          <div class="lib-subsection">
+            <p class="lib-subsection-label">Reading now</p>
+            <ul class="book-list">
+              {reading.map(b => (
+                <li class="book-item book-item--reading">
+                  <span class="book-title">{b.title}</span>
+                  <span class="book-author">{b.author}</span>
+                  {b.note && <span class="book-note">{b.note}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {read.length > 0 && (
+          <div class="lib-subsection">
+            <p class="lib-subsection-label">Read</p>
+            <ul class="book-list">
+              {read.map(b => (
+                <li class="book-item">
+                  <span class="book-title">{b.title}</span>
+                  <span class="book-author">{b.author}</span>
+                  {b.note && <span class="book-note">{b.note}</span>}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </section>
+
+      <!-- ── Papers ───────────────────────────────── -->
+      <section class="lib-section" id="papers">
+        <h2 class="lib-section-title">Papers</h2>
+        {papers.length === 0 ? (
+          <p class="lib-empty">Coming soon.</p>
+        ) : (
+          <ul class="paper-list">
+            {papers.map(p => (
+              <li class="paper-item">
+                <div class="paper-title">
+                  {p.url ? <a href={p.url} target="_blank" rel="noopener noreferrer">{p.title}</a> : p.title}
+                </div>
+                <div class="paper-authors">{p.authors}</div>
+                {p.note && <div class="paper-note">{p.note}</div>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <!-- ── Links ────────────────────────────────── -->
+      <section class="lib-section" id="links">
+        <h2 class="lib-section-title">Links</h2>
+        <p class="lib-section-desc">Essays, posts, and pages worth reading.</p>
+        {links.length === 0 ? (
+          <p class="lib-empty">Coming soon.</p>
+        ) : (
+          <ul class="link-list">
+            {links.map(l => (
+              <li class="link-item">
+                <a class="link-title" href={l.url} target="_blank" rel="noopener noreferrer">
+                  {l.title}
+                </a>
+                {l.source && <span class="link-source">{l.source}</span>}
+                {l.note && <p class="link-note">{l.note}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <!-- ── Quotes ───────────────────────────────── -->
+      <section class="lib-section" id="quotes">
+        <h2 class="lib-section-title">Quotes</h2>
+        {quotes.length === 0 ? (
+          <p class="lib-empty">Coming soon.</p>
+        ) : (
+          <ul class="quote-list">
+            {quotes.map(q => (
+              <li class="quote-item">
+                <blockquote class="quote-text">{q.text}</blockquote>
+                {q.attribution && <cite class="quote-attr">— {q.attribution}</cite>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <!-- ── Ideas ────────────────────────────────── -->
+      <section class="lib-section" id="ideas">
+        <h2 class="lib-section-title">Open Ideas</h2>
+        <p class="lib-section-desc">Things I want to explore. No timeline, no commitment.</p>
+        {ideas.length === 0 ? (
+          <p class="lib-empty">Coming soon.</p>
+        ) : (
+          <ul class="idea-list">
+            {ideas.map(idea => (
+              <li class="idea-item">
+                <p class="idea-text">{idea.idea}</p>
+                {idea.note && <p class="idea-note">{idea.note}</p>}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  .library-page {
+    padding-block: var(--space-12) var(--space-16);
+  }
+
+  .library-header {
+    max-width: var(--max-prose);
+    margin-bottom: var(--space-16);
+  }
+
+  .library-title {
+    font-size: var(--size-3xl);
+    letter-spacing: -0.02em;
+    font-weight: normal;
+    margin-bottom: var(--space-4);
+  }
+
+  .library-intro {
+    color: var(--text-muted);
+    margin-bottom: var(--space-6);
+    line-height: var(--lh-relaxed);
+  }
+
+  .library-nav {
+    display: flex;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+  }
+
+  .library-nav a {
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+  }
+  .library-nav a:hover { color: var(--accent); }
+
+  /* ── Sections ───────────────────────── */
+  .lib-section {
+    max-width: var(--max-prose);
+    margin-bottom: var(--space-16);
+    padding-top: var(--space-4);
+  }
+
+  .lib-section-title {
+    font-size: var(--size-xl);
+    font-weight: normal;
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lib-section-desc {
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--space-6);
+  }
+
+  .lib-subsection {
+    margin-bottom: var(--space-8);
+  }
+
+  .lib-subsection-label {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--space-4);
+    max-width: none;
+  }
+
+  .lib-empty {
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ── Books ──────────────────────────── */
+  .book-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .book-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-4);
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+
+  .book-item--reading .book-title {
+    color: var(--accent);
+  }
+
+  .book-title {
+    font-size: var(--size-base);
+    color: var(--text);
+    line-height: var(--lh-tight);
+  }
+
+  .book-author {
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .book-note {
+    grid-column: 1 / -1;
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: calc(var(--space-1) * -1);
+  }
+
+  /* ── Papers ─────────────────────────── */
+  .paper-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .paper-item {}
+
+  .paper-title {
+    font-size: var(--size-base);
+    margin-bottom: var(--space-1);
+  }
+
+  .paper-title a {
+    color: var(--link);
+  }
+
+  .paper-authors {
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    margin-bottom: var(--space-1);
+  }
+
+  .paper-note {
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ── Links ──────────────────────────── */
+  .link-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .link-item {}
+
+  .link-title {
+    font-size: var(--size-base);
+    color: var(--link);
+    display: block;
+    margin-bottom: var(--space-1);
+  }
+
+  .link-source {
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: var(--space-1);
+  }
+
+  .link-note {
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    font-style: italic;
+    max-width: none;
+    margin: 0;
+  }
+
+  /* ── Quotes ─────────────────────────── */
+  .quote-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .quote-item {}
+
+  .quote-text {
+    font-size: var(--size-lg);
+    line-height: var(--lh-relaxed);
+    color: var(--text);
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+    padding-left: var(--space-6);
+    margin: 0 0 var(--space-2);
+  }
+
+  .quote-attr {
+    font-family: var(--sans);
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    font-style: normal;
+    padding-left: var(--space-6);
+    display: block;
+  }
+
+  /* ── Ideas ──────────────────────────── */
+  .idea-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .idea-item {
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--border);
+  }
+
+  .idea-text {
+    font-size: var(--size-base);
+    margin-bottom: var(--space-1);
+  }
+
+  .idea-note {
+    font-size: var(--size-sm);
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0;
+  }
+</style>

@@ -10,10 +10,14 @@
   --link-hover:  #b07340;
   --code-bg:     #eee9e0;
   --selection-bg: #f0dfc8;
+  --paper:       #fffdf8;
+  --ink:         #1c1f1d;
+  --signal:      #e0b25a;
 
-  --serif: Georgia, 'Times New Roman', serif;
-  --sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'Cascadia Code', 'Fira Code', Consolas, 'Courier New', monospace;
+  --serif: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', 'Cascadia Code', Consolas, 'Courier New', monospace;
+  --hand: 'Caveat', 'Segoe Print', cursive;
 
   --size-sm:   0.875rem;
   --size-base: 1.0625rem;
@@ -179,173 +183,6 @@ main { flex: 1; }
   gap: var(--space-2);
 }
 .site-footer__rss:hover { color: var(--accent); }
-
-/* ─── Home page ───────────────────────────────────────────────────────────── */
-.home {
-  padding-block: var(--space-16);
-}
-
-.home__intro {
-  max-width: var(--max-prose);
-  margin-bottom: var(--space-16);
-}
-
-.home__title {
-  font-size: var(--size-4xl);
-  letter-spacing: -0.02em;
-  color: var(--text);
-  margin-bottom: var(--space-6);
-  line-height: 1.1;
-}
-
-.home__tagline {
-  font-size: var(--size-lg);
-  color: var(--text-muted);
-  line-height: var(--lh-relaxed);
-}
-
-.home__section-title {
-  font-family: var(--sans);
-  font-size: var(--size-sm);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: var(--space-8);
-  padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--border);
-}
-
-/* ─── Home columns ────────────────────────────────────────────────────────── */
-.home__columns {
-  display: grid;
-  grid-template-columns: 1fr 17rem;
-  gap: var(--space-16);
-  align-items: start;
-}
-
-.home__sidebar {
-  position: sticky;
-  top: var(--space-8);
-}
-
-.bite-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-
-.bite-item {
-  padding-block: var(--space-4);
-  border-bottom: 1px solid var(--border);
-}
-
-.bite-item__title {
-  font-size: var(--size-base);
-  line-height: var(--lh-tight);
-  margin-bottom: var(--space-1);
-}
-
-.bite-item__title a {
-  color: var(--text);
-  text-decoration: none;
-}
-.bite-item__title a:hover { color: var(--accent); }
-
-.bite-item__date {
-  font-family: var(--sans);
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.bite-list__more {
-  display: inline-block;
-  margin-top: var(--space-4);
-  font-family: var(--sans);
-  font-size: var(--size-sm);
-  color: var(--text-muted);
-  text-decoration: none;
-}
-.bite-list__more:hover { color: var(--accent); }
-
-@media (max-width: 48rem) {
-  .home__columns {
-    grid-template-columns: 1fr;
-  }
-  .home__sidebar {
-    position: static;
-  }
-}
-
-/* ─── Article card ────────────────────────────────────────────────────────── */
-.article-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-8);
-}
-
-.article-card {
-  display: grid;
-  grid-template-columns: 7rem 1fr;
-  gap: var(--space-6);
-  align-items: baseline;
-}
-
-.article-card__date {
-  font-family: var(--sans);
-  font-size: var(--size-sm);
-  color: var(--text-muted);
-  white-space: nowrap;
-  padding-top: 0.2em;
-}
-
-.article-card__body {}
-
-.article-card__title {
-  font-size: var(--size-xl);
-  font-weight: normal;
-  letter-spacing: -0.01em;
-  margin-bottom: var(--space-2);
-}
-
-.article-card__title a {
-  color: var(--text);
-  text-decoration: none;
-}
-.article-card__title a:hover { color: var(--accent); }
-
-.article-card__desc {
-  font-size: var(--size-sm);
-  color: var(--text-muted);
-  line-height: var(--lh-relaxed);
-  max-width: 32rem;
-}
-
-.article-card__topics {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
-  list-style: none;
-}
-
-.article-card__topic {
-  font-family: var(--sans);
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  padding: 0.15em 0.6em;
-  border-radius: var(--radius);
-  letter-spacing: 0.02em;
-}
-
-@media (max-width: 36rem) {
-  .article-card {
-    grid-template-columns: 1fr;
-    gap: var(--space-2);
-  }
-}
 
 /* ─── Article page ────────────────────────────────────────────────────────── */
 .article {
@@ -535,24 +372,6 @@ main { flex: 1; }
 .prose .footnotes ol { padding-left: var(--space-4); }
 .prose .footnotes li { margin-bottom: var(--space-2); }
 
-/* ─── About page ──────────────────────────────────────────────────────────── */
-.about {
-  padding-block: var(--space-12) var(--space-16);
-  max-width: var(--max-prose);
-}
-
-.about__heading {
-  font-size: var(--size-3xl);
-  letter-spacing: -0.02em;
-  margin-bottom: var(--space-8);
-  font-weight: normal;
-}
-
-.about__body p {
-  margin-bottom: var(--space-6);
-  line-height: var(--lh-relaxed);
-}
-
 /* ─── 404 page ────────────────────────────────────────────────────────────── */
 .not-found {
   padding-block: var(--space-24);
@@ -606,6 +425,56 @@ main { flex: 1; }
   border: 0;
 }
 
-@media (max-width: 36rem) {
-  .home__title { font-size: var(--size-3xl); }
+@media (max-width: 30rem) {
+  .site-header__nav { gap: var(--space-4); flex-wrap: wrap; }
+}
+
+.site-footer__links {
+  display: flex;
+  gap: var(--space-4);
+  margin-left: auto;
+  margin-right: var(--space-4);
+}
+.site-footer__links a {
+  font-family: var(--sans);
+  font-size: var(--size-sm);
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.site-footer__links a:hover { color: var(--accent); }
+
+/* ─── Page head (shared by Musings / Madness / About) ────────────────────── */
+.hand {
+  font-family: var(--hand);
+  font-size: 1.35rem;
+  color: var(--accent);
+  display: inline-block;
+  transform: rotate(-3deg);
+}
+
+.page-head {
+  padding-block: var(--space-16) var(--space-8);
+}
+.page-head__title {
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-block: var(--space-2) var(--space-4);
+}
+.page-head__title--musings { font-style: italic; }
+.page-head__title--madness { font-family: var(--mono); letter-spacing: -0.05em; }
+.page-head__lede {
+  font-size: var(--size-lg);
+  line-height: 1.6;
+  max-width: 34rem;
+}
+
+/* Graph paper for the Madness half */
+.graph-paper {
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(rgba(255,255,255,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.045) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: #d9dbd2;
 }
