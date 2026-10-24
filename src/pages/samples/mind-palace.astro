@@ -1,0 +1,375 @@
+---
+import { getCollection } from 'astro:content';
+import { BASE } from '../../site.config';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft && !data.placeholder);
+allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const posts = allPosts.filter((p) => !p.data.topics?.includes('bites'));
+const bites = allPosts.filter((p) => p.data.topics?.includes('bites'));
+
+function fmtDate(d: Date) {
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+function fmtShort(d: Date) {
+  return d.toLocaleDateString('en-GB', { month: 'short', year: 'numeric' });
+}
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mind Palace — Sample Layout</title>
+  <style>
+    :root {
+      --bg: #0a0a12;
+      --bg-panel: #111120;
+      --bg-panel-hover: #161628;
+      --bg-card: #0e0e1e;
+      --text: #e0d8cc;
+      --text-mid: #a89880;
+      --text-faint: #6a5e50;
+      --gold: #c9a84c;
+      --gold-dim: #7a6230;
+      --gold-bright: #e0c060;
+      --border: #1e1e2e;
+      --border-gold: #3a2e18;
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans: system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    /* ── Header / Entry Hall ─────────────────────── */
+    .entry-hall {
+      padding: 4rem 0 3.5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 4rem;
+      position: relative;
+    }
+
+    .entry-hall::before,
+    .entry-hall::after {
+      content: '◈';
+      position: absolute;
+      top: 4rem;
+      font-size: 0.75rem;
+      color: var(--gold-dim);
+    }
+    .entry-hall::before { left: 0; }
+    .entry-hall::after { right: 0; }
+
+    .palace-name {
+      font-family: var(--serif);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 1.25rem;
+    }
+
+    .site-title {
+      font-family: var(--serif);
+      font-size: clamp(1.75rem, 5vw, 2.75rem);
+      font-weight: normal;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .site-tagline {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      margin-bottom: 2.5rem;
+    }
+
+    .chambers-nav {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .chambers-nav a {
+      font-family: var(--sans);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .chambers-nav a:hover { color: var(--gold); }
+
+    /* Decorative separator */
+    .chambers-nav li:not(:last-child)::after {
+      content: '·';
+      margin-left: 2rem;
+      color: var(--border);
+    }
+
+    /* ── Chamber ─────────────────────────────────── */
+    .chamber {
+      margin-bottom: 4.5rem;
+    }
+
+    .chamber-header {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .chamber-name {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      white-space: nowrap;
+    }
+
+    .chamber-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--gold-dim), transparent);
+    }
+
+    .chamber-desc {
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      white-space: nowrap;
+    }
+
+    /* ── Archive cards (essays) ──────────────────── */
+    .archive-list { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+
+    .archive-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--gold-dim);
+      padding: 1.5rem 1.75rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1.5rem;
+      align-items: center;
+      text-decoration: none;
+      transition: background 0.15s, border-left-color 0.15s;
+    }
+
+    .archive-card:hover {
+      background: var(--bg-panel-hover);
+      border-left-color: var(--gold);
+    }
+
+    .card-tag {
+      font-family: var(--sans);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      margin-bottom: 0.4rem;
+    }
+
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: normal;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      line-height: 1.35;
+    }
+
+    .archive-card:hover .card-title { color: var(--gold-bright); }
+
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-mid);
+      line-height: 1.55;
+      max-width: 32rem;
+    }
+
+    .card-enter {
+      font-family: var(--sans);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--gold-dim);
+      white-space: nowrap;
+      text-align: right;
+    }
+
+    .archive-card:hover .card-enter { color: var(--gold); }
+
+    .card-date {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      color: var(--text-faint);
+      margin-top: 0.15rem;
+    }
+
+    /* ── Parlour (bites) ─────────────────────────── */
+    .parlour-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .parlour-card {
+      background: var(--bg-card);
+      padding: 1.1rem 1.25rem;
+      text-decoration: none;
+      display: block;
+      transition: background 0.15s;
+    }
+    .parlour-card:hover { background: var(--bg-panel); }
+
+    .parlour-title {
+      font-size: 0.88rem;
+      font-weight: normal;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+      line-height: 1.4;
+    }
+    .parlour-card:hover .parlour-title { color: var(--gold-bright); }
+
+    .parlour-date {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      color: var(--text-faint);
+    }
+
+    /* ── Footer / Exit ───────────────────────────── */
+    .palace-footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 0 4rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .footer-mark {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--gold-dim);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-copy {
+      font-family: var(--sans);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+    }
+
+    /* ── Back ─────────────────────────────────────── */
+    .back {
+      font-family: var(--sans);
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      color: var(--text-faint);
+      text-decoration: none;
+      display: block;
+      padding-top: 1.5rem;
+      margin-bottom: -1rem;
+      text-transform: uppercase;
+    }
+    .back:hover { color: var(--gold-dim); }
+
+    @media (max-width: 40rem) {
+      .entry-hall::before,
+      .entry-hall::after { display: none; }
+      .parlour-grid { grid-template-columns: 1fr; }
+      .archive-card { grid-template-columns: 1fr; }
+      .card-enter { display: none; }
+      .chamber-desc { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href=".">&larr; samples</a>
+
+    <header class="entry-hall">
+      <p class="palace-name">The Mind Palace of</p>
+      <h1 class="site-title">Musings and Madness</h1>
+      <p class="site-tagline">curious · intellectual · wandering</p>
+      <nav>
+        <ul class="chambers-nav">
+          <li><a href="#">The Archive</a></li>
+          <li><a href="#">The Parlour</a></li>
+          <li><a href="#">The Study</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="chamber" id="archive">
+        <div class="chamber-header">
+          <span class="chamber-name">The Archive</span>
+          <div class="chamber-rule"></div>
+          <span class="chamber-desc">essays &amp; long meditations</span>
+        </div>
+        <ul class="archive-list">
+          {posts.map((post) => (
+            <li>
+              <a class="archive-card" href={`${BASE}blog/${post.id}`}>
+                <div>
+                  <div class="card-tag">
+                    {post.data.topics?.filter(t => t !== 'bites').slice(0, 1).join('') ?? 'reflection'}
+                  </div>
+                  <div class="card-title">{post.data.title}</div>
+                  <div class="card-desc">{post.data.description}</div>
+                  <div class="card-date">{fmtDate(post.data.originalDate ?? post.data.date)}</div>
+                </div>
+                <div class="card-enter">Enter &rarr;</div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {bites.length > 0 && (
+        <section class="chamber" id="parlour">
+          <div class="chamber-header">
+            <span class="chamber-name">The Parlour</span>
+            <div class="chamber-rule"></div>
+            <span class="chamber-desc">quick thoughts &amp; observations</span>
+          </div>
+          <div class="parlour-grid">
+            {bites.map((post) => (
+              <a class="parlour-card" href={`${BASE}blog/${post.id}`}>
+                <div class="parlour-title">{post.data.title}</div>
+                <div class="parlour-date">{fmtShort(post.data.originalDate ?? post.data.date)}</div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+    </main>
+
+    <footer class="palace-footer">
+      <p class="footer-mark">◈ &nbsp; &nbsp; ◈ &nbsp; &nbsp; ◈</p>
+      <p class="footer-copy">&copy; {new Date().getFullYear()} Arun &mdash; Musings and Madness</p>
+    </footer>
+  </div>
+</body>
+</html>

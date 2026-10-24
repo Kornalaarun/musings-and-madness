@@ -1,0 +1,337 @@
+---
+import { getCollection } from 'astro:content';
+import { BASE } from '../../site.config';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft && !data.placeholder);
+allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const posts = allPosts.filter((p) => !p.data.topics?.includes('bites'));
+const bites = allPosts.filter((p) => p.data.topics?.includes('bites'));
+
+function fmtDate(d: Date) {
+  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
+}
+function fmtYear(d: Date) {
+  return d.getFullYear();
+}
+function padNum(n: number) {
+  return String(n).padStart(3, '0');
+}
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lab Notebook — Sample Layout</title>
+  <style>
+    :root {
+      --bg: #f7f4ee;
+      --line: #ddd5c4;
+      --ink: #1a1612;
+      --ink-mid: #4a3c2e;
+      --ink-faint: #8a7a6a;
+      --accent: #c04a38;
+      --border: #d8cfc2;
+      --mono: 'Courier New', Courier, monospace;
+      --serif: Georgia, 'Times New Roman', serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      background-image: repeating-linear-gradient(
+        transparent,
+        transparent 1.75rem,
+        var(--line) 1.75rem,
+        var(--line) calc(1.75rem + 1px)
+      );
+      color: var(--ink);
+      font-family: var(--serif);
+      font-size: 1rem;
+      line-height: 1.75rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 54rem;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+      position: relative;
+    }
+
+    /* Red margin line */
+    .container::before {
+      content: '';
+      position: absolute;
+      left: 4.5rem;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--accent);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    /* ── Header ──────────────────────────────────── */
+    .site-header {
+      padding: 3.5rem 0 0;
+      margin-bottom: 3.5rem;
+    }
+
+    .header-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.25rem;
+    }
+
+    .site-title {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: normal;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin-bottom: 0.1rem;
+    }
+
+    .site-subtitle {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+    }
+
+    .header-rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.75rem 0;
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .site-nav a {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      text-decoration: none;
+    }
+    .site-nav a:hover { color: var(--accent); }
+
+    /* ── Section labels ───────────────────────────── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 1.75rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Entries (main writing) ───────────────────── */
+    .entry-list { list-style: none; }
+
+    .entry {
+      display: grid;
+      grid-template-columns: 2.5rem 1fr;
+      gap: 1.5rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+
+    .entry-num {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--accent);
+      opacity: 0.6;
+      text-align: right;
+      padding-top: 0.35em;
+      letter-spacing: 0.04em;
+    }
+
+    .entry-meta {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .entry-tag {
+      color: var(--ink-mid);
+    }
+
+    .entry-title {
+      font-size: 1.1rem;
+      font-weight: normal;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.2rem;
+      line-height: 1.4;
+    }
+
+    .entry-title a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .entry-title a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+    .entry-desc {
+      font-size: 0.82rem;
+      color: var(--ink-faint);
+      line-height: 1.6;
+      max-width: 36rem;
+    }
+
+    /* ── Margin notes (bites) ─────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 16rem;
+      gap: 4rem;
+      align-items: start;
+      margin-top: 3.5rem;
+    }
+
+    .margin-notes { }
+
+    .margin-item {
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .margin-item-meta {
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .margin-item-title {
+      font-size: 0.88rem;
+      font-weight: normal;
+    }
+
+    .margin-item-title a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .margin-item-title a:hover { color: var(--accent); }
+
+    /* ── Footer ───────────────────────────────────── */
+    .site-footer {
+      padding: 3.5rem 0 4rem;
+      margin-top: 3.5rem;
+    }
+
+    .footer-inner {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.08em;
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 1.75rem;
+    }
+
+    /* ── Back link ────────────────────────────────── */
+    .back {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      color: var(--ink-faint);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 2rem;
+    }
+    .back:hover { color: var(--accent); }
+
+    @media (max-width: 48rem) {
+      .two-col { grid-template-columns: 1fr; gap: 2rem; }
+      .container::before { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a class="back" href=".">&larr; samples</a>
+
+    <header class="site-header">
+      <p class="header-label">Personal Log / Vol. I</p>
+      <h1 class="site-title">Musings and Madness</h1>
+      <p class="site-subtitle">Field notes · observations · marginalia</p>
+      <hr class="header-rule" />
+      <nav>
+        <ul class="site-nav">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Archive</a></li>
+          <li><a href="#">Notes</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="two-col">
+      <main>
+        <p class="section-label">Field log — Writing</p>
+        <ul class="entry-list">
+          {posts.map((post, i) => (
+            <li class="entry">
+              <span class="entry-num">{padNum(i + 1)}</span>
+              <div>
+                <div class="entry-meta">
+                  <span>{fmtDate(post.data.originalDate ?? post.data.date)}</span>
+                  {post.data.topics?.filter(t => t !== 'bites').slice(0, 1).map(t => (
+                    <span class="entry-tag">[{t}]</span>
+                  ))}
+                </div>
+                <h2 class="entry-title">
+                  <a href={`${BASE}blog/${post.id}`}>{post.data.title}</a>
+                </h2>
+                <p class="entry-desc">{post.data.description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </main>
+
+      <aside>
+        <p class="section-label">Margin notes</p>
+        <ul class="entry-list">
+          {bites.map((post) => (
+            <li class="margin-item">
+              <div class="margin-item-meta">{fmtDate(post.data.originalDate ?? post.data.date)}</div>
+              <p class="margin-item-title">
+                <a href={`${BASE}blog/${post.id}`}>{post.data.title}</a>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <span>Musings and Madness · Personal Log</span>
+        <span>&copy; {new Date().getFullYear()} Arun</span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
