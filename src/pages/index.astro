@@ -24,6 +24,9 @@ const nightstand = books.filter((b) => b.status === 'reading');
 const building = projects.filter((p) => p.status === 'building');
 
 
+// The one box the world puts me in, and everything else that spills out of it.
+const selves = ['writer', 'chess player', 'quizzer', 'science optimist', 'storyteller', 'reader'];
+
 const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
 ---
 
@@ -40,7 +43,10 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
       </h1>
       <p class="hook__lede">I write to understand, and I build to find out.</p>
 
-      <div class="box"><span>engineer</span></div>
+      <ul class="selves" aria-label="Things I am">
+        <li class="selves__boxed">engineer</li>
+        {selves.map((s, i) => <li style={`--i:${i}`}>{s}</li>)}
+      </ul>
     </section>
 
     <!-- II. The diptych -->
@@ -195,22 +201,37 @@ const year = (d: Date) => `'${String(d.getFullYear()).slice(2)}`;
     color: var(--text);
   }
 
-  /* The one box the world puts me in. */
-  .box {
-    display: inline-block;
+  /* One role boxed in; the rest spill out beside it. */
+  .selves {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
     margin-top: var(--space-8);
-    padding: 0.6rem 0.75rem;
-    border: 1.5px dashed var(--text-muted);
-    border-radius: 2px;
+    max-width: 36rem;
   }
-  .box span {
-    display: inline-block;
+  .selves li {
     font-family: var(--sans);
     font-size: var(--size-sm);
     padding: 0.15rem 0.55rem;
     border: 1px solid var(--border);
     background: var(--paper);
     border-radius: 999px;
+    white-space: nowrap;
+    transform: rotate(calc((var(--i) - 2) * 1.5deg)) translateY(calc(var(--i) * 1px));
+  }
+  .selves li.selves__boxed {
+    position: relative;
+    transform: none;
+    margin: 0.6rem 1.2rem 0.6rem 0.6rem;
+  }
+  .selves__boxed::before {
+    content: '';
+    position: absolute;
+    inset: -0.6rem;
+    border: 1.5px dashed var(--text-muted);
+    border-radius: 2px;
   }
 
   /* ── II. Diptych ─────────────────────────────────────────── */
