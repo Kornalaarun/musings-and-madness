@@ -43,12 +43,6 @@ export const projects: Project[] = [
     tags: ['maps', 'Hyderabad', 'food'],
   },
   {
-    name: 'memory-system',
-    description: 'Composite intelligence research targeting ARC-AGI-3. Exploring memory architectures and reasoning in AI systems.',
-    status: 'building',
-    tags: ['AI', 'research', 'ARC-AGI'],
-  },
-  {
     name: 'Bharat Ko Janiye Quiz',
     description: 'Rebuilt the Government of India\'s global quiz platform on AWS - Cognito, API Gateway, Lambdas, 10-question format.',
     status: 'shipped',
