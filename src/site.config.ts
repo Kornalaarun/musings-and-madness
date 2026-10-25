@@ -20,8 +20,8 @@ export const SOCIALS: Social[] = [
   { label: 'LinkedIn',  url: 'https://www.linkedin.com/in/arun-kornala/' },
   { label: 'X',         url: 'https://x.com/kornalaarun' },
   { label: 'GitHub',    url: 'https://github.com/Kornalaarun' },
-  { label: 'Instagram', url: '' }, // AI stories + trivia channel, coming
-  { label: 'YouTube',   url: '' }, // AI stories + trivia channel, coming
+  { label: 'Instagram', url: 'https://www.instagram.com/worldhasstories/' },
+  { label: 'YouTube',   url: 'https://www.youtube.com/@world.has.stories' },
 ];
 
 export const liveSocials = SOCIALS.filter((s) => s.url);

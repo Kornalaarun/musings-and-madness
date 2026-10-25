@@ -24,10 +24,11 @@ export const projects: Project[] = [
     url: 'https://github.com/kornalaarun/mad-titan',
   },
   {
-    name: 'AI Storytelling + Trivia Channels',
-    description: 'Building channels for visual creative stories and trivia on Instagram and YouTube Shorts - where AI does the heavy lifting.',
+    name: 'The World Has Stories',
+    description: 'The stories behind what everyone believes - fables, true stories and trivia on YouTube and Instagram, where AI does the heavy lifting.',
     status: 'building',
     tags: ['AI', 'content', 'storytelling'],
+    url: 'https://www.youtube.com/@world.has.stories',
   },
   {
     name: 'Lease Document Intelligence',
